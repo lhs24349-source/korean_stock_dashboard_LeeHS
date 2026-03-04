@@ -20,10 +20,17 @@ st.set_page_config(page_title="AI 수급 전략가 v2.0", layout="wide", page_ic
 st.markdown("""
     <style>
     .main { background-color: #0f172a; color: #f8fafc; }
-    .stMetric { background-color: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; }
-    .stTable { border-radius: 15px; overflow: hidden; }
+    .stMetric { 
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    [data-testid="stMetricLabel"] { color: #94a3b8 !important; font-size: 1rem !important; font-weight: 600 !important; }
+    [data-testid="stMetricValue"] { color: #ffffff !important; font-size: 2.5rem !important; font-weight: 800 !important; }
     h1 { background: linear-gradient(to right, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .score-badge { background: linear-gradient(135deg, #6366f1, #a855f7); padding: 5px 12px; border-radius: 8px; font-weight: bold; }
+    .score-badge { background: linear-gradient(135deg, #6366f1, #a855f7); padding: 5px 12px; border-radius: 8px; font-weight: bold; color: white; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -69,8 +76,22 @@ st.caption("실시간 한국 시장 수급 질 & 뉴스 인텔리전스 (Cloud S
 col1, col2 = st.columns(2)
 with col1:
     st.metric("KOSPI", "2,593.54", "-701.32 (-21.28%)", delta_color="inverse")
+    st.markdown("""
+        <div style='display: flex; gap: 15px; font-size: 0.85rem; padding: 5px 15px;'>
+            <span style='color: #4ade80;'>外 +2,312억</span>
+            <span style='color: #f43f5e;'>機 -5,888억</span>
+            <span style='color: #94a3b8;'>個 +796억</span>
+        </div>
+    """, unsafe_allow_html=True)
 with col2:
     st.metric("KOSDAQ", "978.44", "-159.20 (-13.99%)", delta_color="inverse")
+    st.markdown("""
+        <div style='display: flex; gap: 15px; font-size: 0.85rem; padding: 5px 15px;'>
+            <span style='color: #4ade80;'>外 +11,715억</span>
+            <span style='color: #4ade80;'>機 +250억</span>
+            <span style='color: #f43f5e;'>個 -12,026억</span>
+        </div>
+    """, unsafe_allow_html=True)
 
 # 수급 데이터 (시뮬레이션)
 st.subheader("🔥 오늘의 수급 질 TOP 종목")
