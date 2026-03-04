@@ -49,19 +49,26 @@ def fetch_news(stock_name):
     except:
         return []
 
+# 외부 알림 엔진 (Telegram/Discord 독립 발송)
 def send_alert(stock):
     news = fetch_news(stock['name'])
     news_text = "\n".join([f"- [{n['title']}]({n['link']})" for n in news]) if news else "관련 뉴스 없음"
     msg = f"🚀 [수급 급변 알림]\n종목명: {stock['name']}\n점수: {stock['score']}점\n주역: {stock['mainBuyer']}\n이슈: {stock['issue']}\n\n📊 뉴스:\n{news_text}"
     
-    # Telegram
+    # 텔레그램 발송 (설정 있을 때만)
     if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
-        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-        requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "text": msg, "parse_mode": "Markdown"})
+        try:
+            url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+            requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "text": msg, "parse_mode": "Markdown"}, timeout=5)
+        except Exception as e:
+            st.error(f"Telegram 발송 실패: {e}")
     
-    # Discord
+    # 디스코드 발송 (설정 있을 때만)
     if DISCORD_WEBHOOK_URL:
-        requests.post(DISCORD_WEBHOOK_URL, json={"content": msg})
+        try:
+            requests.post(DISCORD_WEBHOOK_URL, json={"content": msg}, timeout=5)
+        except Exception as e:
+            st.error(f"Discord 발송 실패: {e}")
 
 # 사이드바 설정
 st.sidebar.title("🛠️ 시스템 설정")
